@@ -245,6 +245,20 @@ def show_stats(player):
     score_text = FONT_MD.render(str(player.score), 1, WHITE)
     screen.blit(score_text, [32, 32])
 
+def show_lose():
+    title_text = FONT_XL.render("You lose!", 1, WHITE)
+    screen.blit(title_text, [128, 204])
+
+def show_win():
+    title_text = FONT_XL.render("You win!", 1, WHITE)
+    screen.blit(title_text, [128, 204])
+
+def restart_screen():
+    screen.fill(BLACK)
+    font = pygame.font.Font(None, 48)
+    text = font.render("Press R to play again!", 1, BLACK)
+    screen.blit(text, [0, 100])
+
 # Game loop
 done = False
 
@@ -260,7 +274,9 @@ while not done:
             elif stage == PLAYING:
                 if event.key == pygame.K_SPACE:
                     ship.shoot()
-
+            elif stage == END:
+                if event.key == pygame.K_r:
+                    stage == START
     if stage == PLAYING:
         pressed = pygame.key.get_pressed()
 
@@ -281,6 +297,12 @@ while not done:
         mobs.update(lasers, player)
         bombs.update()
         fleet.update()
+    if stage == PLAYING:
+        if stage == PLAYING:
+            if player.score == 3:
+                stage = END
+            elif ship.shield == 0:
+                stage = END
 
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
     screen.blit(spacebg,background_rect)
@@ -301,6 +323,13 @@ while not done:
 
     if stage == START:
         show_title_screen()
+
+    elif stage == END:
+        if player.score == 3:
+            show_win()
+        elif ship.shield == 0:
+            show_lose()
+
 
     # Update screen (Actually draw the picture in the window.)
     pygame.display.flip()
