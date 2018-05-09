@@ -9,11 +9,11 @@ pygame.init()
 
 
 # Window
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 900
+HEIGHT = 675
 SIZE = (WIDTH, HEIGHT)
 TITLE = "Space War"
-screen = pygame.display.set_mode((800,600))
+screen = pygame.display.set_mode((900,675))
 pygame.display.set_caption(TITLE)
 
 background = pygame.Surface(screen.get_size())
@@ -68,6 +68,12 @@ spacebg = pygame.image.load('images/background.gif')
 
 # Game classes
 # Game classes
+#def draw(self)
+
+#draw_shield_bar(self.screen, 50, 50, player.shield)
+
+
+
 class Ship(pygame.sprite.Sprite):
     def __init__(self, x, y, image):
         super().__init__()
@@ -79,6 +85,17 @@ class Ship(pygame.sprite.Sprite):
         
         self.speed = 3
         self.shield = 5
+
+    def draw_shield_bar(surf, x, y, pct):
+        if pct < 0:
+            pct = 0
+        BAR_LENGTH = 200
+        BAR_HEIGHT = 20
+        fill = (pct/100 * BAR_LENGTH)
+        outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+        fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
+        pg.draw.rect(surf, GREEN, fill_rect)
+        pg.draw.rect(surf, WHITE, outline_rect, 2)
 
     def move_left(self):
         self.rect.x -= self.speed
@@ -137,6 +154,7 @@ class Mob(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.shield = 3
 
     def drop_bomb(self):
         bomb = Bomb(bomb_img)
@@ -149,8 +167,12 @@ class Mob(pygame.sprite.Sprite):
 
         if len(hit_list) > 0:
             #EXPLOSION.play()
+            self.shield -= 1
+        elif self.shield < 0:
             player.score += 1
             self.kill()
+
+
 
 class Bomb(pygame.sprite.Sprite):
     
@@ -209,32 +231,40 @@ class Fleet:
         if bomber != None:
             bomber.drop_bomb()
 
+def setup():
+    global ship, mobs, stage, player, bombs, lasers, fleet
+
+    ship = Ship(384, 536, ship_img)
+    mob1 = Mob(128, 64, mob_img)
+    mob2 = Mob(256, 64, mob_img)
+    mob3 = Mob(384, 64, mob_img)
+    mob4 = Mob(128, 0, mob_img)
+    mob5 = Mob(256, 0, mob_img)
+    mob6 = Mob(384, 0, mob_img)
+
+    player = pygame.sprite.GroupSingle()
+    player.add(ship)
+    player.score = 0
+
+    lasers = pygame.sprite.Group()
+
+    mobs = pygame.sprite.Group()
+    mobs.add(mob1, mob2, mob3, mob4, mob5, mob6)
+
+    bombs = pygame.sprite.Group()
+
+
+    fleet = Fleet(mobs)
+
+    stage = START
 
 # set stage
-stage = START
+
 
     
 # Make game objects
-ship = Ship(384, 536, ship_img)
-mob1 = Mob(128, 64, mob_img)
-mob2 = Mob(256, 64, mob_img)
-mob3 = Mob(384, 64, mob_img)
-
 
 # Make sprite groups
-player = pygame.sprite.GroupSingle()
-player.add(ship)
-player.score = 0
-
-lasers = pygame.sprite.Group()
-
-mobs = pygame.sprite.Group()
-mobs.add(mob1, mob2, mob3)
-
-bombs = pygame.sprite.Group()
-
-
-fleet = Fleet(mobs)
 
 #Game Helper Functions
 def show_title_screen():
@@ -254,12 +284,11 @@ def show_win():
     screen.blit(title_text, [128, 204])
 
 def restart_screen():
-    screen.fill(BLACK)
-    font = pygame.font.Font(None, 48)
-    text = font.render("Press R to play again!", 1, BLACK)
+    text = FONT_MD.render("Press R to play again!", 1, WHITE)
     screen.blit(text, [0, 100])
 
 # Game loop
+setup()
 done = False
 
 while not done:
@@ -274,9 +303,10 @@ while not done:
             elif stage == PLAYING:
                 if event.key == pygame.K_SPACE:
                     ship.shoot()
-            elif stage == END:
+            elif restart == 1:
                 if event.key == pygame.K_r:
-                    stage == START
+                    setup()
+
     if stage == PLAYING:
         pressed = pygame.key.get_pressed()
 
@@ -299,7 +329,7 @@ while not done:
         fleet.update()
     if stage == PLAYING:
         if stage == PLAYING:
-            if player.score == 3:
+            if len(mobs) == 0:
                 stage = END
             elif ship.shield == 0:
                 stage = END
@@ -325,10 +355,14 @@ while not done:
         show_title_screen()
 
     elif stage == END:
-        if player.score == 3:
+        if len(mobs) == 0:
             show_win()
+            restart_screen()
+            restart = 1
         elif ship.shield == 0:
             show_lose()
+            restart_screen()
+            restart = 1
 
 
     # Update screen (Actually draw the picture in the window.)
