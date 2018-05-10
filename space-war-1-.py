@@ -61,6 +61,8 @@ mob_img = pygame.image.load('images/mob.png')
 bomb_img = pygame.image.load('images/bluelaser.png')
 spacegod = pygame.image.load('images/spacegod.png')
 spacebg = pygame.image.load('images/background.gif')
+healthbar_img = pygame.image.load("images/healthbar.png")
+health_img = pygame.image.load("images/health.png")
 
 
 # Sounds
@@ -84,18 +86,16 @@ class Ship(pygame.sprite.Sprite):
         self.rect.y = y
         
         self.speed = 3
-        self.shield = 5
+        self.shield = 100
 
-    def draw_shield_bar(surf, x, y, pct):
-        if pct < 0:
-            pct = 0
-        BAR_LENGTH = 200
-        BAR_HEIGHT = 20
-        fill = (pct/100 * BAR_LENGTH)
-        outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
-        fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
-        pg.draw.rect(surf, GREEN, fill_rect)
-        pg.draw.rect(surf, WHITE, outline_rect, 2)
+    def h_bar(self):
+        #healthbar = Ship(self.rect.x, self.rect.y, healthbar_img)
+        #health = Ship(self.rect.x, self.rect.y, healthbar_img)
+        screen.blit(healthbar_img, (6,5))
+        for health1 in range(self.shield):
+            screen.blit(health_img, (health1+8, 8))
+            #healthbar.rect.bottom = self.rect.bottom
+            #healthbar.rect.bottom = self.rect.bottom
 
     def move_left(self):
         self.rect.x -= self.speed
@@ -114,7 +114,7 @@ class Ship(pygame.sprite.Sprite):
 
         for hit in hit_list:
             # play hit sound
-            self.shield -= 1
+            self.shield -= 25
 
         hit_list = pygame.sprite.spritecollide(self, mobs, False)
         if len(hit_list) > 0:
@@ -246,6 +246,7 @@ def setup():
     player.add(ship)
     player.score = 0
 
+
     lasers = pygame.sprite.Group()
 
     mobs = pygame.sprite.Group()
@@ -350,6 +351,7 @@ while not done:
     bombs.draw(screen)
     mobs.draw(screen)
     show_stats(player)
+    ship.h_bar()
 
     if stage == START:
         show_title_screen()
