@@ -1,9 +1,9 @@
 ## Welcome to Space Wars!
-
-<Enter>
-<Enter>
-
-![alt text](https://opengameart.org/sites/default/files/Background-1.png)
+ 
+  
+  
+Inline-style:
+![alt text](https://opengameart.org/sites/default/files/Background-1.png "Title T1")
 
 
 # Description:
