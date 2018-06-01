@@ -1,9 +1,6 @@
 ## Welcome to Space Wars!
  
-  
-  
-Inline-style:
-![alt text](https://opengameart.org/sites/default/files/Background-1.png "Title T1")
+---
 
 
 # Description:
@@ -12,7 +9,7 @@ Inline-style:
     - The Krispy Kreme spacecrew sets off into deep space to protect the donuts!
 
 
-
+---
 
 # How to Play:
     - Use Arrow Keys to move
