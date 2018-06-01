@@ -32,7 +32,7 @@
 ---
 
 ## Unseen Gameplay from Chase
-![alt text](https://raw.githubusercontent.com/Chasinggoodgrades/Spacewars/master/images/startscreenscreenie.PNG)
+![alt text](https://raw.githubusercontent.com/Chasinggoodgrades/Spacewars/master/images/gameplay.PNG)
     
 
     
