@@ -18,7 +18,7 @@
     - Survive
     
     
-![alt text](https://github.com/Chasinggoodgrades/Spacewars/blob/master/images/startscreen.png "Logo Title Text 1")
+![alt text](https://raw.githubusercontent.com/Chasinggoodgrades/Spacewars/master/images/Screenshot.PNG)
     
 
     
