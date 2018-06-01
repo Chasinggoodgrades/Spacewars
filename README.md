@@ -22,15 +22,16 @@
 
 ---
 
-# How to Download the Game:
+## How to Download the Game:
     - Go to: https://github.com/Chasinggoodgrades/Spacewars/releases
     - Download Space_Wars.exe
     - Put on Desktop
     - Run Space_Wars.exe
     - Have fun!
 
+---
 
-# Unseen Gameplay from Chase
+## Unseen Gameplay from Chase
 ![alt text](https://raw.githubusercontent.com/Chasinggoodgrades/Spacewars/master/images/Screenshot.PNG)
     
 
